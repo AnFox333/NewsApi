@@ -2,7 +2,11 @@ package com.chnu.news.network
 
 import com.chnu.news.base.intercepror.LoggingInterceptor
 import com.chnu.news.base.intercepror.LoggingInterceptorImpl
+import com.chnu.news.network.NetworkConstants.API_KEY
+import com.chnu.news.network.NetworkConstants.API_KEY_QUERY
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -36,7 +40,6 @@ fun createRetrofit(
     gson: GsonConverterFactory,
     loggingInterceptor: LoggingInterceptor
 ): Retrofit {
-    val okHttpClient = OkHttpClient.Builder() // TODO проверить и удалить
 
     return Retrofit.Builder()
         .addConverterFactory(gson)
@@ -45,13 +48,25 @@ fun createRetrofit(
             readTimeout(NetworkConstants.TIME_OUT_VALUE, TimeUnit.SECONDS)
             writeTimeout(NetworkConstants.TIME_OUT_VALUE, TimeUnit.SECONDS)
             addInterceptor(loggingInterceptor)
+            addInterceptor { chain ->
+                chain.proceed(
+                    chain.request().newBuilder().url(
+                        chain.request().url().newBuilder()
+                            .addQueryParameter(API_KEY_QUERY, API_KEY).build()
+                    ).build()
+                )
+            }
         }.build())
         .baseUrl(NetworkConstants.BASE_URL)
         .build()
+
 }
 
 object NetworkConstants {
-    const val BASE_URL = ""
+    const val BASE_URL = "https://newsapi.org/v2/"
     const val TIME_OUT_VALUE: Long = 60L
+    const val API_KEY = "e60697f7f9874f35a82708c0df1618a9"
+    const val API_KEY_QUERY = "e60697f7f9874f35a82708c0df1618a9"
+//https://newsapi.org/
 }
 
