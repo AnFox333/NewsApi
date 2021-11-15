@@ -4,6 +4,8 @@ import com.chnu.news.base.intercepror.LoggingInterceptor
 import com.chnu.news.base.intercepror.LoggingInterceptorImpl
 import com.chnu.news.network.NetworkConstants.API_KEY
 import com.chnu.news.network.NetworkConstants.API_KEY_QUERY
+import com.chnu.news.network.NetworkConstants.COUNTRY
+import com.chnu.news.network.NetworkConstants.COUNTRY_QUERY
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -51,8 +53,10 @@ fun createRetrofit(
             addInterceptor { chain ->
                 chain.proceed(
                     chain.request().newBuilder().url(
-                        chain.request().url().newBuilder()
-                            .addQueryParameter(API_KEY_QUERY, API_KEY).build()
+                        chain.request().url().newBuilder().apply {
+                            addQueryParameter(API_KEY_QUERY, API_KEY)
+                            addQueryParameter(COUNTRY_QUERY, COUNTRY)
+                        }.build()
                     ).build()
                 )
             }
@@ -66,7 +70,9 @@ object NetworkConstants {
     const val BASE_URL = "https://newsapi.org/v2/"
     const val TIME_OUT_VALUE: Long = 60L
     const val API_KEY = "e60697f7f9874f35a82708c0df1618a9"
-    const val API_KEY_QUERY = "e60697f7f9874f35a82708c0df1618a9"
+    const val API_KEY_QUERY = "apiKey"
+    const val COUNTRY_QUERY = "country"
+    const val COUNTRY = "ua"
 //https://newsapi.org/
 }
 
