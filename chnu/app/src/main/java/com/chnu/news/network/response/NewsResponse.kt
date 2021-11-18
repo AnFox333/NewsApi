@@ -19,6 +19,6 @@ data class ArticleModel(
 
 data class Source(val id: String? = null, val name: String)
 
-enum class ResponseStatus {
-    OK, ERROR
+enum class ResponseStatus{
+    ok, error
 }

@@ -7,17 +7,18 @@ import com.chnu.news.network.ui_wrapper.ResponseData
 import com.chnu.news.network.ui_wrapper.ResponseError
 import java.lang.Exception
 
-class HeadlinesInteractor(private val newsApi: NewsApi) {
+class HeadlinesInteractorImpl(private val newsApi: NewsApi) : HeadlinesInteractor {
 
-    suspend fun getTopHeadlines(): InteractorData {
+    override suspend fun getTopHeadlines(): InteractorData {
         return try {
+
             with(newsApi.getTopHeadlines()) {
                 when {
-                    isSuccessful && body() != null && body()!!.status == ResponseStatus.OK -> ResponseData(
+                    isSuccessful && body() != null && body()!!.status == ResponseStatus.ok -> ResponseData(
                         totalResults = body()!!.totalResults,
                         articles = body()!!.articles
                     )
-                    isSuccessful && body() != null && body()!!.status == ResponseStatus.ERROR -> ResponseError(
+                    isSuccessful && body() != null && body()!!.status == ResponseStatus.error -> ResponseError(
                         code = body()!!.code ?: "NetworkError",
                         message = body()!!.message ?: "Network Error Message"
                     )
@@ -32,4 +33,8 @@ class HeadlinesInteractor(private val newsApi: NewsApi) {
             ResponseError(code = "${e.message}", message = "Ooops! Smth went wrong")
         }
     }
+}
+
+interface HeadlinesInteractor {
+    suspend fun getTopHeadlines(): InteractorData
 }

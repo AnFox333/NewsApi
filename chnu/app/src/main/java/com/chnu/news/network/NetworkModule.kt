@@ -2,6 +2,8 @@ package com.chnu.news.network
 
 import com.chnu.news.base.intercepror.LoggingInterceptor
 import com.chnu.news.base.intercepror.LoggingInterceptorImpl
+import com.chnu.news.headlines.HeadlinesInteractor
+import com.chnu.news.headlines.HeadlinesInteractorImpl
 import com.chnu.news.network.NetworkConstants.API_KEY
 import com.chnu.news.network.NetworkConstants.API_KEY_QUERY
 import com.chnu.news.network.NetworkConstants.COUNTRY
@@ -17,7 +19,7 @@ import java.util.concurrent.TimeUnit
 val networkModule = module {
 
     //create news api instance
-    single { get<Retrofit>().create(NewsApi::class.java) }
+    single<NewsApi> { get<Retrofit>().create(NewsApi::class.java) }
 
     //create retrofit instance
     single { createRetrofit(gson = get(), loggingInterceptor = get()) }
@@ -28,6 +30,8 @@ val networkModule = module {
             level = LoggingInterceptorImpl.Level.BODY
         }
     }
+
+    single<HeadlinesInteractor> { HeadlinesInteractorImpl(get()) }
 
     //create GsonConverterFactory
     single { createGson() }
