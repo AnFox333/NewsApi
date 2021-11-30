@@ -1,9 +1,7 @@
 package com.chnu.news.presentation.main
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -11,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chnu.news.R
 import com.chnu.news.presentation.navigation.SearchActivityResultContract
-import com.chnu.news.presentation.search.SearchActivity
 import com.chnu.news.visibilityIf
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
@@ -33,6 +30,10 @@ class MainActivity : AppCompatActivity() {
             findViewById<ProgressBar>(R.id.progress_bar).visibilityIf(it)
         })
 
+        viewModel.errorLiveData.observe(this, {
+            showErrorDialog(it)
+        })
+
         findViewById<ImageView>(R.id.searchActivity).setOnClickListener { openSearchActivity.launch("Search") }
     }
 
@@ -43,12 +44,30 @@ class MainActivity : AppCompatActivity() {
 
     fun showErrorDialog(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-        //todo add custom dialog
     }
 
     private val openSearchActivity =
-       registerForActivityResult(SearchActivityResultContract()){ result ->
-           Log.d("CheckResultFromSearch","${result}")
+        registerForActivityResult(SearchActivityResultContract()) { result ->
+            when {
+                result != null && result.titleSearch.isNotBlank() && result.contentSearch.isNotBlank() -> {
+                    viewModel.getSearchedNewsByTitleAndBody(
+                        result.titleSearch,
+                        result.contentSearch
+                    )
+                }
+                result != null && result.titleSearch.isNotBlank() -> {
+                    viewModel.getSearchedNewsByTitle(result.titleSearch)
+                }
+                result != null && result.contentSearch.isNotBlank() -> {
+                    viewModel.getSearchedNewsByTitleAndBody(
+                       null,
+                        result.contentSearch
+                    )
+                }
+                else -> {
+                    viewModel.getHeadlines()
+                }
+         }
        }
 
 }

@@ -59,7 +59,6 @@ fun createRetrofit(
                     chain.request().newBuilder().url(
                         chain.request().url().newBuilder().apply {
                             addQueryParameter(API_KEY_QUERY, API_KEY)
-                            addQueryParameter(COUNTRY_QUERY, COUNTRY)
                         }.build()
                     ).build()
                 )
@@ -77,6 +76,5 @@ object NetworkConstants {
     const val API_KEY_QUERY = "apiKey"
     const val COUNTRY_QUERY = "country"
     const val COUNTRY = "ua"
-//https://newsapi.org/
 }
 

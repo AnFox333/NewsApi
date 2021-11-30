@@ -5,9 +5,12 @@
       <map>
         <entry key="..\:/myfiles/chnu/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.40520833333333334" />
+        <entry key="app/src/main/res/drawable/bkg_search.xml" value="0.375" />
+        <entry key="app/src/main/res/drawable/ic_back.xml" value="0.20625" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.40520833333333334" />
         <entry key="app/src/main/res/drawable/news_drawable.xml" value="0.21180677494010544" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.4237147577360539" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_search.xml" value="0.2745726495726496" />
         <entry key="app/src/main/res/layout/item_news.xml" value="0.256238587948874" />
       </map>
     </option>

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chnu.news.headlines.HeadlinesInteractor
 import com.chnu.news.network.response.ArticleModel
+import com.chnu.news.network.ui_wrapper.InteractorData
 import com.chnu.news.network.ui_wrapper.ResponseData
 import com.chnu.news.network.ui_wrapper.ResponseError
 import kotlinx.coroutines.Dispatchers
@@ -23,18 +24,68 @@ class NewsViewModel(private val headlinesNews: HeadlinesInteractor) : ViewModel(
                 when (this) {
                     is ResponseData -> {
                         listLiveData.postValue(this.articles)
-                        loaderLiveData.postValue(true)
+                        loaderLiveData.postValue(false)
                     }
                     is ResponseError -> {
                         errorLiveData.postValue(this.message)
-                        loaderLiveData.postValue(true)
+                        loaderLiveData.postValue(false)
                     }
                 }
             }
         }
     }
 
-    fun getSearchedNes(find : String){
-
+    fun getSearchedNewsByTitle(title: String){
+        loaderLiveData.value = true
+        viewModelScope.launch(Dispatchers.IO) {
+            with(headlinesNews.getSearchedHeadlines(title)) {
+                when (this) {
+                    is ResponseData -> {
+                        listLiveData.postValue(this.articles)
+                        loaderLiveData.postValue(false)
+                    }
+                    is ResponseError -> {
+                        errorLiveData.postValue(this.message)
+                        loaderLiveData.postValue(false)
+                    }
+                }
+            }
+        }
     }
+
+    fun getSearchedNewsByTitleAndBody(title: String?, body : String){
+        loaderLiveData.value = true
+        viewModelScope.launch(Dispatchers.IO) {
+            with(headlinesNews.getSearchEverything(title, body)) {
+                when (this) {
+                    is ResponseData -> {
+                        listLiveData.postValue(this.articles)
+                        loaderLiveData.postValue(false)
+                    }
+                    is ResponseError -> {
+                        errorLiveData.postValue(this.message)
+                        loaderLiveData.postValue(false)
+                    }
+                }
+            }
+        }
+    }
+
+   fun getHeadlines(){
+       loaderLiveData.value = true
+       viewModelScope.launch(Dispatchers.IO) {
+           with(headlinesNews.getTopHeadlines()) {
+               when (this) {
+                   is ResponseData -> {
+                       listLiveData.postValue(this.articles)
+                       loaderLiveData.postValue(true)
+                   }
+                   is ResponseError -> {
+                       errorLiveData.postValue(this.message)
+                       loaderLiveData.postValue(true)
+                   }
+               }
+           }
+       }
+   }
 }
