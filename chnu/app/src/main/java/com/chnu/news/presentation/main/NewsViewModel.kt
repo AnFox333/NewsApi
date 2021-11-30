@@ -1,4 +1,4 @@
-package com.chnu.news
+package com.chnu.news.presentation.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,5 +32,9 @@ class NewsViewModel(private val headlinesNews: HeadlinesInteractor) : ViewModel(
                 }
             }
         }
+    }
+
+    fun getSearchedNes(find : String){
+
     }
 }

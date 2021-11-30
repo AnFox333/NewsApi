@@ -1,6 +1,5 @@
-package com.chnu.news.presentation
+package com.chnu.news.presentation.main
 
-import com.chnu.news.NewsViewModel
 import org.koin.dsl.module
 
 import org.koin.androidx.viewmodel.dsl.viewModel

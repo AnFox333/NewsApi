@@ -5,7 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary_color"
-    tools:context=".MainActivity">
+    tools:context=".presentation.main.MainActivity">
+
+    <ImageView
+        android:id="@+id/searchActivity"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_margin="15dp"
+        android:src="@drawable/news_drawable"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/newsList"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/newsList"
@@ -16,7 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:itemCount="10"
         tools:listitem="@layout/item_news"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/searchActivity" />
 
 
     <ProgressBar

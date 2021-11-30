@@ -1,15 +1,19 @@
-package com.chnu.news
+package com.chnu.news.presentation.main
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.koin.android.ext.android.inject
+import com.chnu.news.R
+import com.chnu.news.presentation.navigation.SearchActivityResultContract
+import com.chnu.news.presentation.search.SearchActivity
+import com.chnu.news.visibilityIf
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +32,8 @@ class MainActivity : AppCompatActivity() {
         viewModel.loaderLiveData.observe(this, {
             findViewById<ProgressBar>(R.id.progress_bar).visibilityIf(it)
         })
+
+        findViewById<ImageView>(R.id.searchActivity).setOnClickListener { openSearchActivity.launch("Search") }
     }
 
     private fun initList(){
@@ -39,5 +45,10 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         //todo add custom dialog
     }
+
+    private val openSearchActivity =
+       registerForActivityResult(SearchActivityResultContract()){ result ->
+           Log.d("CheckResultFromSearch","${result}")
+       }
 
 }
