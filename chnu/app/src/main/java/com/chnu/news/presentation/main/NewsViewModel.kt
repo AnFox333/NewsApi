@@ -88,4 +88,22 @@ class NewsViewModel(private val headlinesNews: HeadlinesInteractor) : ViewModel(
            }
        }
    }
+
+    fun getSearchedSorted(title: String?, body : String?, sortedBy: String){
+        loaderLiveData.value = true
+        viewModelScope.launch(Dispatchers.IO) {
+            with(headlinesNews.getSearchSortedEverything(title, body, sortedBy)) {
+                when (this) {
+                    is ResponseData -> {
+                        listLiveData.postValue(this.articles)
+                        loaderLiveData.postValue(false)
+                    }
+                    is ResponseError -> {
+                        errorLiveData.postValue(this.message)
+                        loaderLiveData.postValue(false)
+                    }
+                }
+            }
+        }
+    }
 }

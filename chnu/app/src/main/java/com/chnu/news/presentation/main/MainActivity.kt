@@ -1,5 +1,6 @@
 package com.chnu.news.presentation.main
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.searchActivity).setOnClickListener { openSearchActivity.launch("Search") }
     }
 
+    @SuppressLint("CutPasteId")
     private fun initList(){
         findViewById<RecyclerView>(R.id.newsList).layoutManager = LinearLayoutManager(this)
         findViewById<RecyclerView>(R.id.newsList).adapter = adapter
@@ -49,6 +51,9 @@ class MainActivity : AppCompatActivity() {
     private val openSearchActivity =
         registerForActivityResult(SearchActivityResultContract()) { result ->
             when {
+                result != null &&   result != null && result.titleSearch.isNotBlank() &&(result.isSortByDate || result.isSortByPopularity) -> {
+                    viewModel.getSearchedSorted(result.titleSearch,result.contentSearch, if (result.isSortByDate) "publishedAt" else "popularity")
+                }
                 result != null && result.titleSearch.isNotBlank() && result.contentSearch.isNotBlank() -> {
                     viewModel.getSearchedNewsByTitleAndBody(
                         result.titleSearch,

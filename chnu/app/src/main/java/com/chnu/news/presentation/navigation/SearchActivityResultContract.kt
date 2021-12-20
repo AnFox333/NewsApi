@@ -24,4 +24,4 @@ class SearchActivityResultContract : ActivityResultContract<String, SearchBackDa
     }
 }
 
-data class SearchBackData(val titleSearch: String, val contentSearch : String) : Serializable
+data class SearchBackData(val titleSearch: String, val contentSearch : String, val isSortByPopularity: Boolean, val isSortByDate : Boolean ) : Serializable

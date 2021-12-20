@@ -41,6 +41,21 @@ class HeadlinesInteractorImpl(private val newsApi: NewsApi) : HeadlinesInteracto
         }
     }
 
+    override suspend fun getSearchSortedEverything(
+        title: String?,
+        body: String?,
+        sortedBy: String
+    ): InteractorData {
+        return try {
+
+            with(newsApi.getSearchSortedEverything(title, sortedBy)) {
+                validateResponse()
+            }
+        } catch (e: Exception) {
+            ResponseError(code = "${e.message}", message = "Ooops! Smth went wrong")
+        }
+    }
+
     private fun Response<NewsResponse>.validateResponse() =
         when {
             isSuccessful && body() != null && body()!!.status == ResponseStatus.ok -> ResponseData(
@@ -62,4 +77,5 @@ interface HeadlinesInteractor {
     suspend fun getTopHeadlines(): InteractorData
     suspend fun getSearchedHeadlines(searched : String): InteractorData
     suspend fun getSearchEverything(title : String?, body : String) : InteractorData
+    suspend fun getSearchSortedEverything(title : String?, body : String?, sortedBy: String) : InteractorData
 }

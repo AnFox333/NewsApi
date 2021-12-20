@@ -1,5 +1,7 @@
 package com.chnu.news.network
 
+import com.chnu.news.network.NetworkConstants.API_KEY
+import com.chnu.news.network.NetworkConstants.API_KEY_QUERY
 import com.chnu.news.network.NetworkConstants.COUNTRY
 import com.chnu.news.network.NetworkConstants.COUNTRY_QUERY
 import com.chnu.news.network.response.NewsResponse
@@ -22,6 +24,13 @@ interface NewsApi {
     suspend fun getSearchEverything(
         @Query("qInTitle") title: String?,
         @Query("q") titleAndBody: String
+    ): Response<NewsResponse>
+
+    @GET("everything")
+    suspend fun getSearchSortedEverything(
+        @Query("q") titleAndBody: String?,
+        @Query("sortBy") sortBy: String,
+        @Query(API_KEY_QUERY) country: String = API_KEY
     ): Response<NewsResponse>
 
 }
